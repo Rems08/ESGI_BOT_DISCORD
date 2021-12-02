@@ -22,6 +22,8 @@ async def on_ready():
     |  __| `--. \ | __  | |   | ___ \| | | | | |     | |  `--. \ |    /|  __||  _  | | | | \ /  
     | |___/\__/ / |_\ \_| |_  | |_/ /\ \_/ / | |    _| |_/\__/ / | |\ \| |___| | | | |/ /  | |  
     \____/\____/ \____/\___/  \____/  \___/  \_/    \___/\____/  \_| \_\____/\_| |_/___/   \_/
+
+    Our discord: https://discord.gg/vSqxvdaBVY
     """)
     await bot.change_presence(status=discord.Status.online,
             activity=discord.Game("#ESGI | !help"))
@@ -155,6 +157,6 @@ async def disquettePrive(ctx, member: discord.Member):
 #Fin commande DAVY
 
 #Partie lancement du bot
-token = open("../token.txt", "r").read() #Lis la valeur dans le fichier txt token.txt
+token = open("../token.txt", "r").read() #Renseignez le chemin du token ici
 # connecter au serveur
 bot.run(token) #Mettre "Token pour lancer le bot"
