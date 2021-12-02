@@ -155,6 +155,6 @@ async def disquettePrive(ctx, member: discord.Member):
 #Fin commande DAVY
 
 #Partie lancement du bot
-token = open("token.txt", "r").read() #Lis la valeur dans le fichier txt token.txt
+token = open("../token.txt", "r").read() #Lis la valeur dans le fichier txt token.txt
 # connecter au serveur
 bot.run(token) #Mettre "Token pour lancer le bot"
