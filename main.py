@@ -6,6 +6,20 @@ from discord.utils import get
 from discord.ext import commands
 import time, calendar, asyncio, datetime, discord, requests #On importe le module time pour la commande sleep
 import heurePause
+import requests #Enable HTTP requests
+from requests import*
+from bs4 import BeautifulSoup #Find Elements on website 
+"""
+  ____       _    __     __  __   __ 
+ |  _"\  U  /"\  u\ \   /"/u \ \ / / 
+/| | | |  \/ _ \/  \ \ / //   \ V /  
+U| |_| |\ / ___ \  /\ V /_,-.U_|"|_u 
+ |____/ u/_/   \_\U  \_/-(_/   |_|   
+  |||_    \\    >>  //     .-,//|(_  
+ (__)_)  (__)  (__)(__)     \_) (__) 
+"""
+
+
 
 # créer le bot
 bot = commands.Bot(command_prefix='!') #Permettra au bot de savoir quand est-ce qu'on lui parle grâce au str de command_prefix
@@ -61,6 +75,30 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     else:
         await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
         await ctx.author.send("Vous écrivez dans le mauvais channel.")
+@bot.command()
+async def mes_notes(ctx): #ATTENTION RISQUE DE POSER DES PB
+        url = "https://myges.fr/student/marks;jsessionid=B08F28A8171E158FDA6EB8B9E7383F4E" #URL du site à parcourir
+        user = "rmassiet"
+        mdp = "ta3JHeK8"
+        page = requests.get(url, auth=('user', 'mdp'))
+        code_connexion = str(page.status_code)
+        if code_connexion == "200":
+            print("Connexion réussite")
+            print("Status code: ", page.status_code)
+        else:
+            print("Connexion failed")
+            print(f"ERROR: {code_connexion}")
+            exit()
+        soup = BeautifulSoup(page.content, 'html.parser')
+        print(soup.title) #Permet d'afficher toute la page
+        print("Récupération de vos notes en cours...")
+        liste = soup.find_all("td", role="gridcell")
+        for i in liste:
+            print(i.string)
+            if i.string == None:
+                await ctx.send("Case vide comme le cerveau de Villain")
+            else:
+                await ctx.send(i.string)
 
 #Commandes de DAVY
 #Cette fonction permet de comparer deux personnes grâce à la commande !comp *personne 1* *personne 2*
