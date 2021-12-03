@@ -16,9 +16,3 @@ class Prof:
         self.prenom = prenom #Prenom de l'enseignant
         self.age = age #Age de l'enseignant (facultatif)
         self.classes = [] #Liste des classes que gèrent les profs
-
-class Matiere:
-
-    def __init__(self, nom, coef):
-        self.nom = nom #Nom de la matiere
-        self.coef = coef #Coefficient de la matiere

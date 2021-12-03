@@ -6,6 +6,10 @@ Projet universitaire, ESGI bot est un bot discord qui récupère les information
 - discord
 
 ## Futures idées
+- Récupérer ses notes !IMPORTANT!
+- Récupérer les prochains cours !IMPORTANT!
+- !Récupérer les supports de cours !IMPORTANT!
+- Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spédcial
 - Système de vote de délégué
 ## Licence
 MIT License
