@@ -52,7 +52,7 @@ class MYGES:
             print(f'{nom_cours}\t{nom_prof}\t{grades}')
 
 def main():
-    myges = MYGES("rmassiet", "ta3JHeK8")
+    myges = MYGES("", "")
     myges.print_absences("2021")
     myges.print_grades("2021")
 if __name__ == '__main__':
