@@ -55,7 +55,7 @@ class MYGES:
             nom_prof = row["teacher_last_name"] # Nom du prof
             grades = f"{(str(row['grades'])[1:-1])} / 20" if row["grades"] else "Vous n'avez pas encore de note dans cette matière"
             print(f'{nom_cours}\t{nom_prof}\t{grades}') 
-            embed.add_field(name=f"{nom_cours} ({nom_prof})", value=f"{grades}", inline=True)
+            embed.add_field(name=f"{nom_cours}: {nom_prof}", value=f"{grades}", inline=True)
             print("____________________") 
         await ctx.send(embed=embed)
 
