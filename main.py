@@ -74,6 +74,12 @@ async def mes_notes(ctx, user, password):
     myges = MyGES.MYGES(user, password)
     await myges.print_grades(ctx, "2021")
 
+@bot.command()
+async def mes_absences(ctx, user, password): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGES.MYGES(user, password)
+    await myges.print_absences(ctx, "2021")
+    
 @bot.event
 async def on_command_error(ctx,error):
     if isinstance(error,commands.MissingRequiredArgument):

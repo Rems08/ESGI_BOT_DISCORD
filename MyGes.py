@@ -30,12 +30,20 @@ class MYGES:
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
         
 
-    def print_absences(self, year="2021"):
+    async def print_absences(self, ctx, year="2021"):
+        """Permet d'afficher les absence de l'utilisateur"""
         jsondata = self.get_absences(year)
+        embed=discord.Embed(title=f"absence de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos absence", color=0x1f6e9e)
+        embed.set_author(name="ESGI")
+        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_footer(text="Made by DAVE")
         for row in jsondata["result"]:
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
             just = "Jusitifiée" if row["justified"] else "Non justifiée"
+            course_name = row["course_name"]
             print(f'{date}\t{just}\t{row["course_name"]}')
+            embed.add_field(name=f"{date}: {just}", value=f"{course_name}", inline=True)
+        await ctx.send(embed=embed)
     
     def get_agenda(self, start, end):
         return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token)
@@ -46,7 +54,7 @@ class MYGES:
     async def print_grades(self, ctx, year="2021"):
         """Permet d'afficher les notes de l'utilisateur"""
         embed=discord.Embed(title=f"Notes de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos notes", color=0x1f6e9e)
-        embed.set_author(name="Rems")
+        embed.set_author(name="ESGI")
         embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.set_footer(text="Made by DAVE")
         jsondata = self.get_grades(year)
