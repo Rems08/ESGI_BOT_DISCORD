@@ -5,7 +5,7 @@ from urllib.parse import urlsplit, parse_qs
 import base64
 import json
 import time
-
+import discord
 
 class MYGES:
     def __init__(self, username, password):
@@ -30,7 +30,7 @@ class MYGES:
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
         
 
-    def print_absences(self, year):
+    def print_absences(self, year="2021"):
         jsondata = self.get_absences(year)
         for row in jsondata["result"]:
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
@@ -43,17 +43,35 @@ class MYGES:
     def get_grades(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/grades", headers=self.token).json()
     
-    def print_grades(self, year):
-         jsondata = self.get_grades(year)
-         for row in jsondata["result"]:
-            nom_cours = row["course"]
-            nom_prof = row["teacher_last_name"]
-            grades = row["grades"] if row["grades"] else "Pas de note"
-            print(f'{nom_cours}\t{nom_prof}\t{grades}')
+    async def print_grades(self, ctx, year="2021"):
+        """Permet d'afficher les notes de l'utilisateur"""
+        embed=discord.Embed(title=f"Notes de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos notes", color=0x1f6e9e)
+        embed.set_author(name="Rems")
+        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_footer(text="Made by DAVE")
+        jsondata = self.get_grades(year)
+        for row in jsondata["result"]: #Parcours le fichier JSON
+            nom_cours = row["course"] #Nom du cours
+            nom_prof = row["teacher_last_name"] # Nom du prof
+            grades = f"{(str(row['grades'])[1:-1])} / 20" if row["grades"] else "Vous n'avez pas encore de note dans cette matière"
+            print(f'{nom_cours}\t{nom_prof}\t{grades}') 
+            embed.add_field(name=f"{nom_cours} ({nom_prof})", value=f"{grades}", inline=True)
+            print("____________________") 
+        await ctx.send(embed=embed)
 
-def main():
-    myges = MYGES("rmassiet", "ta3JHeK8")
-    myges.print_absences("2021")
-    myges.print_grades("2021")
-if __name__ == '__main__':
-    main()
+
+#    def main():
+#        myges = MYGES("", "")
+#        print("""
+#        88888888b .d88888b   .88888.  dP     888888ba   .88888.  d888888P 
+#        88        88.    "' d8'   `88 88     88    `8b d8'   `8b    88    
+#    a88aaaa    `Y88888b. 88        88    a88aaaa8P' 88     88    88    
+#        88              `8b 88   YP88 88     88   `8b. 88     88    88    
+#        88        d8'   .8P Y8.   .88 88     88    .88 Y8.   .8P    88    
+#        88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
+#        ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+#        """)
+#        myges.print_absences("2021")
+#        myges.print_grades("2021")
+#    if __name__ == '__main__':
+#        main()

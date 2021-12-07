@@ -4,7 +4,8 @@ from random import*
 from discord.utils import get
 # ajouter un composant de discord.py
 from discord.ext import commands
-import time, calendar, asyncio, datetime, discord, requests #On importe le module time pour la commande sleep
+import time, calendar, asyncio, datetime, discord, requests
+import MyGES #On importe le module time pour la commande sleep
 import heurePause
 import requests #Enable HTTP requests
 from requests import*
@@ -29,31 +30,10 @@ async def on_ready():
     \____/\____/ \____/\___/  \____/  \___/  \_/    \___/\____/  \_| \_\____/\_| |_/___/   \_/
 
     ESGI discord: https://discord.gg/vSqxvdaBVY
-
-    
-__/\\\\\\\\\\\\________/\\\\\\\\\_____/\\\________/\\\__/\\\________/\\\___________                                                                                       
- _\/\\\////////\\\____/\\\\\\\\\\\\\__\/\\\_______\/\\\_\///\\\____/\\\/____________                                                                                      
-  _\/\\\______\//\\\__/\\\/////////\\\_\//\\\______/\\\____\///\\\/\\\/______________                                                                                     
-   _\/\\\_______\/\\\_\/\\\_______\/\\\__\//\\\____/\\\_______\///\\\/________________                                                                                    
-    _\/\\\_______\/\\\_\/\\\\\\\\\\\\\\\___\//\\\__/\\\__________\/\\\_________________                                                                                   
-     _\/\\\_______\/\\\_\/\\\/////////\\\____\//\\\/\\\___________\/\\\_________________                                                                                  
-      _\/\\\_______/\\\__\/\\\_______\/\\\_____\//\\\\\____________\/\\\_________________                                                                                 
-       _\/\\\\\\\\\\\\/___\/\\\_______\/\\\______\//\\\_____________\/\\\_________________                                                                                
-        _\////////////_____\///________\///________\///______________\///__________________                                                                               
-_________/\\\_______________________________________________/\\\\\\_______________________________________________________________________________________________        
- ________\/\\\______________________________________________\////\\\_______________________________________________________________________________________________       
-  ________\/\\\_________________________________________________\/\\\____________________/\\\\\\\\\_______________________________________________________/\\\______      
-   ________\/\\\______/\\\\\\\\___/\\\____/\\\_____/\\\\\\\\_____\/\\\________/\\\\\_____/\\\/////\\\____/\\\\\__/\\\\\_______/\\\\\\\\___/\\/\\\\\\____/\\\\\\\\\\\_     
-    ___/\\\\\\\\\____/\\\/////\\\_\//\\\__/\\\____/\\\/////\\\____\/\\\______/\\\///\\\__\/\\\\\\\\\\___/\\\///\\\\\///\\\___/\\\/////\\\_\/\\\////\\\__\////\\\////__    
-     __/\\\////\\\___/\\\\\\\\\\\___\//\\\/\\\____/\\\\\\\\\\\_____\/\\\_____/\\\__\//\\\_\/\\\//////___\/\\\_\//\\\__\/\\\__/\\\\\\\\\\\__\/\\\__\//\\\____\/\\\______   
-      _\/\\\__\/\\\__\//\\///////_____\//\\\\\____\//\\///////______\/\\\____\//\\\__/\\\__\/\\\_________\/\\\__\/\\\__\/\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__  
-       _\//\\\\\\\/\\__\//\\\\\\\\\\____\//\\\______\//\\\\\\\\\\__/\\\\\\\\\__\///\\\\\/___\/\\\_________\/\\\__\/\\\__\/\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___ 
-        __\///////\//____\//////////______\///________\//////////__\/////////_____\/////_____\///__________\///___\///___\///____\//////////__\///____\///______\/////____
-    
     """)
     await bot.change_presence(status=discord.Status.online,
             activity=discord.Game("#ESGI | !help"))
-    await heurePause.pause() #Lance la fonction qui permet de gérer les pauses 
+    #await heurePause.pause() #Lance la fonction qui permet de gérer les pauses 
 # phrase
 print("Lancement de ESGI...")
 
@@ -71,11 +51,11 @@ async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cou
 
 @bot.command()
 async def help(ctx): #Affiche une liste structurées des différentes commandes
+    '''Cette commande permet de tester le bot'''
     right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
-    if right_channel == True:
-        '''Cette commande permet de tester le bot'''
-        embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x8a00bd)
-        embed.set_author(name="ESGI bot", icon_url="https://i.ytimg.com/vi/q906x1vjeSI/mqdefault.jpg")
+    if right_channel == ctx.channel:
+        embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x1f6e9e)
+        embed.set_author(name="ESGI bot", icon_url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.add_field(name="- !regles", value="Permet d'afficher les règles du serveur", inline=False)
         embed.add_field(name="- !signes", value="Permet d'afficher la liste des signes disponible à utiliser avec la commande horoscope", inline=True)
         embed.add_field(name="- !horoscope", value="Permet d'afficher votre horoscope grâce à la commande !horoscope (votre signe)", inline=True)
@@ -89,29 +69,19 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
         await ctx.author.send("Vous écrivez dans le mauvais channel.")
 
 @bot.command()
-async def mes_notes(ctx): #ATTENTION RISQUE DE POSER DES PB
-        url = "https://myges.fr/student/marks;jsessionid=B08F28A8171E158FDA6EB8B9E7383F4E" #URL du site à parcourir
-        user = "rmassiet"
-        mdp = "ta3JHeK8"
-        page = requests.get(url, auth=('user', 'mdp'))
-        code_connexion = str(page.status_code)
-        if code_connexion == "200":
-            print("Connexion réussite")
-            print("Status code: ", page.status_code)
-        else:
-            print("Connexion failed")
-            print(f"ERROR: {code_connexion}")
-            exit()
-        soup = BeautifulSoup(page.content, 'html.parser')
-        print(soup.title) #Permet d'afficher toute la page
-        print("Récupération de vos notes en cours...")
-        liste = soup.find_all("td", role="gridcell")
-        for i in liste:
-            print(i.string)
-            if i.string == None:
-                await ctx.send("Case vide comme le cerveau de Villain")
-            else:
-                await ctx.send(i.string)
+async def mes_notes(ctx, user, password): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGES.MYGES(user, password)
+    await myges.print_grades(ctx, "2021")
+
+@bot.event
+async def on_command_error(ctx,error):
+    if isinstance(error,commands.MissingRequiredArgument):
+        await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
+    elif isinstance(error,commands.CommandNotFound):
+        await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
+    else:
+        raise error
 
 #Partie lancement du bot
 token = open("../token.txt", "r").read() #Renseignez le chemin du token ici
