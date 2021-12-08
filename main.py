@@ -1,23 +1,28 @@
 # on importe le module discord.py pour utiliser la bibliothèque qui nous permet de contrôler le servuer
-from discord import channel
-from random import*
-from discord.utils import get
-# ajouter un composant de discord.py
+import discord
+from discord import *
 from discord.ext import commands
+from discord.utils import *
+from random import*
+# ajouter un composant de discord.py
 import time, calendar, asyncio, datetime, discord, requests
 import MyGES #On importe le module time pour la commande sleep
 import heurePause
 import requests #Enable HTTP requests
 from requests import*
-from bs4 import BeautifulSoup #Find Elements on website 
+from bs4 import BeautifulSoup #Find Elements on website
+import welcome
 
 
-
+intents = discord.Intents.default()
+intents.typing = True
+intents.presences = True
+intents.members = True
 # créer le bot
-bot = commands.Bot(command_prefix='!') #Permettra au bot de savoir quand est-ce qu'on lui parle grâce au str de command_prefix
-client = discord.Client()
-bot.remove_command('help') #Supprime la commande help afin de créer note propre commande
+bot = commands.Bot(command_prefix='!', intents=intents) #Permettra au bot de savoir quand est-ce qu'on lui parle grâce au str de command_prefix
+#client = discord.Client() inutile à priori
 
+bot.remove_command('help') #Supprime la commande help afin de créer note propre commande
 # détecter quand le bot est pret ("allumé")
 @bot.event
 async def on_ready():
@@ -30,13 +35,20 @@ async def on_ready():
     88        d8'   .8P Y8.   .88 88     88    .88 Y8.   .8P    88       88 d8'   .8P     88     88  88        88     88  88    .8P    88             
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP       dP  Y88888P      dP     dP  88888888P 88     88  8888888P     dP       oo    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-    ESGI discord: https://discord.gg/qmSVQedGek
+    ESGI discord: https://discord.gg/8ZkXxzm5s6
     """)
     await bot.change_presence(status=discord.Status.online,
             activity=discord.Game("#ESGI | !help"))
     #await heurePause.pause() #Lance la fonction qui permet de gérer les pauses 
 # phrase
 print("Lancement de ESGI...")
+
+#Action quand un user arrive dans le serveur
+@bot.event
+async def on_member_join(member):
+    print(member)
+    await member.send(welcome.welcome())
+
 
 @bot.command()
 async def test(ctx): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
