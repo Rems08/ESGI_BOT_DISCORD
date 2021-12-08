@@ -37,6 +37,7 @@ class MYGES:
         embed.set_author(name="ESGI")
         embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.set_footer(text="Made by DAVE")
+        print(ctx.author)
         for row in jsondata["result"]:
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
             just = "Jusitifiée" if row["justified"] else "Non justifiée"
@@ -58,6 +59,7 @@ class MYGES:
         embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.set_footer(text="Made by DAVE")
         jsondata = self.get_grades(year)
+        print(ctx.author)
         for row in jsondata["result"]: #Parcours le fichier JSON
             nom_cours = row["course"] #Nom du cours
             nom_prof = row["teacher_last_name"] # Nom du prof
