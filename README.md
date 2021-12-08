@@ -4,6 +4,7 @@ Projet universitaire, ESGI bot est un bot discord qui récupère les information
 ## Prérequis
 - python3.9
 - discord
+- discord.py
 
 ## Futures idées
 - Récupérer ses notes !IMPORTANT!
