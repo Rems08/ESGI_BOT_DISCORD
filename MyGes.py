@@ -28,7 +28,12 @@ class MYGES:
     
     def get_absences(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
+
+    def get_agenda(self, start, end):
+        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token)
         
+    def get_grades(self, year):
+        return requests.get(f"{self.actionurl}/me/{year}/grades", headers=self.token).json()
 
     async def print_absences(self, ctx, year="2021"):
         """Permet d'afficher les absence de l'utilisateur"""
@@ -46,11 +51,6 @@ class MYGES:
             embed.add_field(name=f"{date}: {just}", value=f"{course_name}", inline=True)
         await ctx.send(embed=embed)
     
-    def get_agenda(self, start, end):
-        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token)
-
-    def get_grades(self, year):
-        return requests.get(f"{self.actionurl}/me/{year}/grades", headers=self.token).json()
     
     async def print_grades(self, ctx, year="2021"):
         """Permet d'afficher les notes de l'utilisateur"""

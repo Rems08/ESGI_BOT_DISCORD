@@ -137,3 +137,20 @@ class MYGES:
                 print(f"{ctr}{key} : {classes[key]}")
                 ctr = '\t'
             print()
+
+def main():
+    myges = MYGES("6666")
+    print("""
+    88888888b .d88888b   .88888.  dP     888888ba   .88888.  d888888P 
+    88        88.    "' d8'   `88 88     88    `8b d8'   `8b    88    
+   a88aaaa    `Y88888b. 88        88    a88aaaa8P' 88     88    88    
+    88              `8b 88   YP88 88     88   `8b. 88     88    88    
+    88        d8'   .8P Y8.   .88 88     88    .88 Y8.   .8P    88    
+    88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
+    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    """)
+    myges.print_absences("2021")
+    myges.print_grades("2021")
+    #myges.print_info()
+if __name__ == '__main__':
+    main()
