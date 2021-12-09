@@ -49,6 +49,13 @@ async def on_member_join(member):
     print(member)
     await member.send(welcome.welcome())
 
+@bot.command()
+async def membres(ctx): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    member_count = 0
+    for member in ctx.guild.members:
+       member_count += 1
+    await ctx.send(f"Le serveur comptabilise {member_count} utilisateur à son actif !")
 
 @bot.command()
 async def test(ctx): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
@@ -67,14 +74,11 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     '''Cette commande permet de tester le bot'''
     right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
     if right_channel == ctx.channel:
-        embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x1f6e9e)
-        embed.set_author(name="ESGI bot", icon_url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
-        embed.add_field(name="- !regles", value="Permet d'afficher les règles du serveur", inline=False)
-        embed.add_field(name="- !signes", value="Permet d'afficher la liste des signes disponible à utiliser avec la commande horoscope", inline=True)
-        embed.add_field(name="- !horoscope", value="Permet d'afficher votre horoscope grâce à la commande !horoscope (votre signe)", inline=True)
-        embed.add_field(name="- !clash", value="Permet de clasher un membre du discord grâce à la commande !clash (mention d'un autre membre)", inline=True)
-        embed.add_field(name="- !disquettePrive", value="Permet d'envoyer un message privé à un autre membre grâce à la commande !disquettePrive (mention d'un autre membre)", inline=True)
-        embed.add_field(name="!comp", value="Compare deux utilisateurs entre eux pour vérifier si ils sont compatible utilisez !comp (mention du permier utilisateur) (mention du deuxième utilisateur)", inline=True)
+        embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
+        embed.set_author(name="ESGI bot !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
+        embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
+        embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
+        embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
         embed.set_footer(text="#Rems")
         await ctx.send(embed=embed)
     else:
