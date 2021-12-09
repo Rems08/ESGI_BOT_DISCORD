@@ -8,7 +8,7 @@ Notre serveur discord: https://discord.gg/8ZkXxzm5s6
 - discord.py
 
 ## Futures idées
-- Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spédcial
+- Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spécial
 - Système de vote de délégué
 
 ## Créateurs
