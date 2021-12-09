@@ -1,5 +1,6 @@
 # ESGI_BOT_DISCORD
-Projet universitaire, ESGI bot est un bot discord qui récupère les informations de MyGes et permets aux utilisateurs d'accéder à leurs données plus facilement. Notes, absences, cours de la semaine, dernières actualités, récupérer automatiquement les supports de cours une fois publiés, contacts professeurs etc... Discord étant beaucoup utilisé par les étudiants il sera fort utile pour toutes les écoles faisant partie du groupe MyGes, le bot sera Open-Souré et sera disponible gratuitement pour tous. Un outil pour faciliter la vie de nos étudiants :)
+Projet universitaire, ESGI bot est un bot discord qui récupère les informations de MyGes et permet aux utilisateurs d'accéder à leurs données plus facilement. Notes, absences, cours de la semaine, dernières actualités, récupérer automatiquement les supports de cours une fois publiés, contacts professeurs etc... Discord étant beaucoup utilisé par les étudiants il sera fort utile pour toutes les écoles faisant partie du groupe MyGes, le bot sera Open-Souré et sera disponible gratuitement pour tous. Un outil pour faciliter la vie de nos étudiants. De plus un serveur Discord est mis en place afin que les étudiants puisse échanger entre eux tant pour leurs projets scolaire que pour simplement converser avec des gens de leur âge. :)\
+Notre serveur discord: https://discord.gg/8ZkXxzm5s6
 
 ## Prérequis
 - python3.9
@@ -7,14 +8,12 @@ Projet universitaire, ESGI bot est un bot discord qui récupère les information
 - discord.py
 
 ## Futures idées
-- Récupérer ses notes !IMPORTANT!
-- Récupérer les prochains cours !IMPORTANT!
-- !Récupérer les supports de cours !IMPORTANT!
 - Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spédcial
 - Système de vote de délégué
 
-## Remerciements
-Elias 
+## Créateurs
+[Rémy MASSIET](https://github.com/Rems08) & [Elias EELKIHEL](https://github.com/xl00t)
+
 ## Licence
 MIT License
 
