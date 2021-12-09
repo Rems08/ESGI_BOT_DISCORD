@@ -98,6 +98,7 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     '''Cette commande permet de tester le bot'''
     embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
     embed.set_author(name="ESGI | !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
+    embed.add_field(name="- !connexion", value="**!connexion** {user MyGES} {Password MyGES} connecte l'utilisateur à son compte MyGES", inline=True)
     embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
     embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
     embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
