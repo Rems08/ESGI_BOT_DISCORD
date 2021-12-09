@@ -148,8 +148,8 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
-    #elif isinstance(error,commands.CommandInvokeError):
-        #await ctx.send("**Erreur:** Avez-vous bien fait la commande: **!connexion** {user MyGES} {Password MyGES} ? \nSi c'est le cas vous écrivez sûrement dans le mauvais channel. Essayez dans le channel 🔎cmd-bot🔎")
+    elif isinstance(error,commands.CommandInvokeError):
+        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis réitérer la connexion")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
         await ctx.message.delete()
