@@ -117,6 +117,7 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
 async def connexion(ctx, user, password): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
     '''Permet à l'utilisateur de se connecter à son profil MyGES à l'aide de son id et de son mdp'''
     myges = MyGES.MYGES(ctx.author.id ,user, password)
+    await ctx.send("✔️**Félicitation votre connexion a bien aboutie merci de votre confiance**✔️")
 
 @bot.command()
 async def mes_notes(ctx, user=None, password=None): 
