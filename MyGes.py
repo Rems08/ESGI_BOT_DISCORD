@@ -41,6 +41,20 @@ class MYGES:
 
         usersout = open('users.json', 'w')
         json.dump(jsonusers, usersout, indent=4, separators=(',',': '))
+
+    def unregister(self):
+        users = open('users.json', 'r')
+        jsonusers = json.load(users)
+        if self.is_registered():
+            for user in jsonusers:
+                if user["DiscordId"] == self.discordid:
+                    for i, user in enumerate(jsonusers):
+                        jsonusers.pop(i)
+            usersout = open('users.json', 'w')
+            json.dump(jsonusers, usersout, indent=4, separators=(',',': '))
+            return True
+        else:
+            return False
     
     def get_userbydiscordid(self):
         users = open('users.json', 'r')

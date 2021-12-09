@@ -7,7 +7,7 @@ from discord.utils import *
 from random import*
 # ajouter un composant de discord.py
 import time, calendar, asyncio, datetime, discord, requests
-import MyGES #On importe le module time pour la commande sleep
+import MyGes #On importe le module time pour la commande sleep
 import heurePause
 import requests #Enable HTTP requests
 from requests import*
@@ -117,19 +117,29 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
 @commands.dm_only()
 async def connexion(ctx, user, password): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
     '''Permet à l'utilisateur de se connecter à son profil MyGES à l'aide de son id et de son mdp'''
-    myges = MyGES.MYGES(ctx.author.id ,user, password)
-    await ctx.send("✔️**Félicitation votre connexion a bien aboutie merci de votre confiance**✔️")
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
+    await ctx.send("✅**Félicitation votre connexion a bien aboutie merci de votre confiance**✅")
+
+@bot.command()
+async def deconnexion(ctx): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
+    '''Permet à l'utilisateur de se déconnecter de son profil MyGES'''
+    myges = MyGes.MYGES(ctx.author.id)
+
+    if myges.unregister():
+        await ctx.send("✅**Félicitation vous vous êtes déconnecté avec succès !**✅")
+    else:
+        await ctx.send("Malhereusement vous n'êtes pas enregistré dans notre base de donnée vous pouvez vous connecter avec !connexion user mdp")
 
 @bot.command()
 async def mes_notes(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
-    myges = MyGES.MYGES(ctx.author.id ,user, password)
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_grades(ctx, "2021")
 
 @bot.command()
 async def mes_absences(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
-    myges = MyGES.MYGES(ctx.author.id ,user, password)
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_absences(ctx, "2021")
     
 @bot.event
@@ -138,8 +148,8 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
-    elif isinstance(error,commands.CommandInvokeError):
-        await ctx.send("**Erreur:** Avez-vous bien fait la commande: **!connexion** {user MyGES} {Password MyGES} ? \nSi c'est le cas vous écrivez sûrement dans le mauvais channel. Essayez dans le channel 🔎cmd-bot🔎")
+    #elif isinstance(error,commands.CommandInvokeError):
+        #await ctx.send("**Erreur:** Avez-vous bien fait la commande: **!connexion** {user MyGES} {Password MyGES} ? \nSi c'est le cas vous écrivez sûrement dans le mauvais channel. Essayez dans le channel 🔎cmd-bot🔎")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
         await ctx.message.delete()
