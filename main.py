@@ -2,6 +2,7 @@
 import discord
 from discord import *
 from discord.ext import commands
+from discord.ext.commands.errors import NoEntryPointError
 from discord.utils import *
 from random import*
 # ajouter un composant de discord.py
@@ -12,6 +13,7 @@ import requests #Enable HTTP requests
 from requests import*
 from bs4 import BeautifulSoup #Find Elements on website
 import welcome
+import embed
 
 
 intents = discord.Intents.default()
@@ -26,7 +28,8 @@ bot.remove_command('help') #Supprime la commande help afin de créer note propre
 # détecter quand le bot est pret ("allumé")
 @bot.event
 async def on_ready():
-    print("""
+    global ESGI_BOT_ART
+    ESGI_BOT_ART= '''
 
     88888888b .d88888b   .88888.  dP     888888ba   .88888.  d888888P    dP .d88888b      888888ba   88888888b  .d888888  888888ba  dP    dP    dP    
     88        88.    "' d8'   `88 88     88    `8b d8'   `8b    88       88 88.    "'     88    `8b  88        d8'    88  88    `8b Y8.  .8P    88    
@@ -36,7 +39,8 @@ async def on_ready():
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP       dP  Y88888P      dP     dP  88888888P 88     88  8888888P     dP       oo    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     ESGI discord: https://discord.gg/8ZkXxzm5s6
-    """)
+    '''
+    print(ESGI_BOT_ART)
     await bot.change_presence(status=discord.Status.online,
             activity=discord.Game("#ESGI | !help"))
     #await heurePause.pause() #Lance la fonction qui permet de gérer les pauses 
@@ -47,21 +51,41 @@ print("Lancement de ESGI...")
 @bot.event
 async def on_member_join(member):
     print(member)
-    await member.send(welcome.welcome())
+    await member.send('''
+    ```yaml
+    /$$      /$$ /$$$$$$$$ /$$        /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$       /$$$$$$ /$$   /$$       /$$      /$$            /$$$$$$  /$$$$$$$$  /$$$$$$ 
+    | $$  /$ | $$| $$_____/| $$       /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/      |_  $$_/| $$$ | $$      | $$$    /$$$           /$$__  $$| $$_____/ /$$__  $$
+    | $$ /$$$| $$| $$      | $$      | $$  \__/| $$  \ $$| $$$$  /$$$$| $$              | $$  | $$$$| $$      | $$$$  /$$$$ /$$   /$$| $$  \__/| $$      | $$  \__/
+    | $$/$$ $$ $$| $$$$$   | $$      | $$      | $$  | $$| $$ $$/$$ $$| $$$$$           | $$  | $$ $$ $$      | $$ $$/$$ $$| $$  | $$| $$ /$$$$| $$$$$   |  $$$$$$ 
+    | $$$$_  $$$$| $$__/   | $$      | $$      | $$  | $$| $$  $$$| $$| $$__/           | $$  | $$  $$$$      | $$  $$$| $$| $$  | $$| $$|_  $$| $$__/    \____  $$
+    | $$$/ \  $$$| $$      | $$      | $$    $$| $$  | $$| $$\  $ | $$| $$              | $$  | $$\  $$$      | $$\  $ | $$| $$  | $$| $$  \ $$| $$       /$$  \ $$
+    | $$/   \  $$| $$$$$$$$| $$$$$$$$|  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$$$$$$$       /$$$$$$| $$ \  $$      | $$ \/  | $$|  $$$$$$$|  $$$$$$/| $$$$$$$$|  $$$$$$/
+    |__/     \__/|________/|________/ \______/  \______/ |__/     |__/|________/      |______/|__/  \__/      |__/     |__/ \____  $$ \______/ |________/ \______/ 
+                                                                                                                            /$$  | $$                              
+                                                                                                                        |  $$$$$$/                              
+                                                                                                                            \______/                                         
+    ```
+    ''')
+    await member.send(welcome.welcome()) #Envoie un message de bienvenue aux utilisateurs rejoignant le serveur
+
 
 @bot.command()
 async def membres(ctx): 
-    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    """Fonction qui permet de lister le nombre de membre présent sur le serveur"""
     member_count = 0
     for member in ctx.guild.members:
        member_count += 1
     await ctx.send(f"Le serveur comptabilise {member_count} utilisateur à son actif !")
+    print(ctx.guild)
 
 @bot.command()
 async def test(ctx): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
     '''Commande inutile pour le moment'''
-    channel = bot.get_channel(908037516945403974)
-    await channel.send("Le bot est en Etat de fonctionner ^^")
+    embed_test = embed.EMBED("title", "description", "!nom_fonction", "https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
+    embed_test.create()
+    embed_test.add_field("Test1", "Value1")
+    embed_test.add_field("Test2", "Value2")
+    await ctx.send(embed=embed_test)
 
 @bot.command()
 async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cours"
@@ -72,29 +96,37 @@ async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cou
 @bot.command()
 async def help(ctx): #Affiche une liste structurées des différentes commandes
     '''Cette commande permet de tester le bot'''
-    right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
-    if right_channel == ctx.channel:
-        embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
-        embed.set_author(name="ESGI bot !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
-        embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
-        embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
-        embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
-        embed.set_footer(text="#Rems")
+    embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
+    embed.set_author(name="ESGI | !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
+    embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
+    embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
+    embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
+    embed.set_footer(text="#Rems")
+    try:
+        right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
+        if right_channel == ctx.channel:
+            await ctx.send(embed=embed)
+        else:
+            await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
+            await ctx.author.send("Vous écrivez dans le mauvais channel.")
+    except:
         await ctx.send(embed=embed)
-    else:
-        await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
-        await ctx.author.send("Vous écrivez dans le mauvais channel.")
 
 @bot.command()
-async def mes_notes(ctx, user, password): 
+async def connexion(ctx, user, password): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
+    '''Permet à l'utilisateur de se connecter à son profil MyGES à l'aide de son id et de son mdp'''
+    myges = MyGES.MYGES(ctx.author.id ,user, password)
+
+@bot.command()
+async def mes_notes(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
-    myges = MyGES.MYGES(user, password)
+    myges = MyGES.MYGES(ctx.author.id ,user, password)
     await myges.print_grades(ctx, "2021")
 
 @bot.command()
-async def mes_absences(ctx, user, password): 
+async def mes_absences(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
-    myges = MyGES.MYGES(user, password)
+    myges = MyGES.MYGES(ctx.author.id ,user, password)
     await myges.print_absences(ctx, "2021")
     
 @bot.event
@@ -103,6 +135,8 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
+    elif isinstance(error,commands.CommandInvokeError):
+        await ctx.send("**Erreur:** Avez-vous bien fait la commande: **!connexion** {user MyGES} {Password MyGES} ? \nSi c'est le cas vous écrivez sûrement dans le mauvais channel. Essayez dans le channel 🔎cmd-bot🔎")
     else:
         raise error
 
