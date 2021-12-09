@@ -113,6 +113,7 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
         await ctx.send(embed=embed)
 
 @bot.command()
+@commands.dm_only()
 async def connexion(ctx, user, password): # Commande de test pour vérifier que le bot est bien en Etat de répondre 
     '''Permet à l'utilisateur de se connecter à son profil MyGES à l'aide de son id et de son mdp'''
     myges = MyGES.MYGES(ctx.author.id ,user, password)
@@ -137,6 +138,9 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
     elif isinstance(error,commands.CommandInvokeError):
         await ctx.send("**Erreur:** Avez-vous bien fait la commande: **!connexion** {user MyGES} {Password MyGES} ? \nSi c'est le cas vous écrivez sûrement dans le mauvais channel. Essayez dans le channel 🔎cmd-bot🔎")
+    elif isinstance(error,commands.PrivateMessageOnly):
+        await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
+        await ctx.message.delete()
     else:
         raise error
 
