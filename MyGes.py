@@ -65,7 +65,7 @@ class MYGES:
     
 
 
-    
+
     def get_absences(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
 
@@ -81,7 +81,7 @@ class MYGES:
 
         ###EMBED###
         embed=discord.Embed(title=f"absence de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos absence", color=0x1f6e9e)
-        embed.set_author(name="ESGI | !mes_absences", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
+        embed.set_author(name="ESGI | !mes_absences", icon_url="https://zupimages.net/up/21/49/73pj.png")
         embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.set_footer(text="Made by DAVE")
         ###EMBED###
