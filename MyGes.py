@@ -147,7 +147,7 @@ class MYGES:
             embed.add_field(name=f"{key}", value=f"{data[key]}", inline=True)
         await ctx.send(embed=embed)
 
-    async def print_students(self,ctx, year="2021"):
+    async def print_students(self,ctx, eleve=False, year="2021"):
         liste_info_nul = ["profile_type", "uid", "links", "civility"] #Liste des informations qui ne seront pas affichées
         dico_trad = { #Traduction des libellés
                     "firstname": "Prénom", 
@@ -161,16 +161,23 @@ class MYGES:
             embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
             embed.set_footer(text="Made by DAVE")
             ctr = ''
-            for key in classes:
-                if f"{ctr}{key}" in liste_info_nul:
-                    pass
-                else:
-                    if f"{ctr}{key}" == "uid":
-                        inline = False
+            if eleve == False:
+                for key in classes:
+                    if f"{ctr}{key}" in liste_info_nul:
+                        pass
                     else:
-                        inline = True
-                    embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes[key]}", inline=inline)
+                        if f"{ctr}{key}" == "uid":
+                            inline = False
+                        else:
+                            inline = True
+                        embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes[key]}", inline=inline)
+            else:
+                embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes['firstname']}", inline=inline)
+                embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes['lastname']}", inline=inline)
+                embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes['email']}", inline=inline)
             await ctx.send(embed=embed)
+
+
 #    def main():
 #        myges = MYGES("", "")
 #        print("""
