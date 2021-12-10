@@ -131,6 +131,18 @@ async def deconnexion(ctx): # Commande de test pour vérifier que le bot est bie
         await ctx.send("Malhereusement vous n'êtes pas enregistré dans notre base de donnée vous pouvez vous connecter avec !connexion user mdp")
 
 @bot.command()
+async def profil(ctx, user=None, password=None): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
+    await myges.print_profil(ctx)
+
+@bot.command()
+async def ma_classe(ctx, user=None, password=None): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
+    await myges.print_students(ctx)
+
+@bot.command()
 async def mes_notes(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
@@ -141,7 +153,7 @@ async def mes_absences(ctx, user=None, password=None):
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_absences(ctx, "2021")
-    
+####COMMANDES MYGES#### 
 @bot.event
 async def on_command_error(ctx,error):
     if isinstance(error,commands.MissingRequiredArgument):

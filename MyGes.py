@@ -79,6 +79,8 @@ class MYGES:
     
 
 
+    def get_profil(self):
+        return requests.get(f"{self.actionurl}/me/profile", headers=self.token).json()["result"]
 
     def get_absences(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
@@ -88,6 +90,9 @@ class MYGES:
         
     def get_grades(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/grades", headers=self.token).json()
+
+    def get_students(self, year):
+        return requests.get(requests.get(f"{self.actionurl}/me/{year}/classes", headers=self.token).json()["result"][0]["links"][1]["href"], headers=self.token).json()["result"]
 
     async def print_absences(self, ctx, year="2021"):
         """Permet d'afficher les absence de l'utilisateur"""
@@ -130,7 +135,42 @@ class MYGES:
             print("____________________") 
         await ctx.send(embed=embed)
 
+    async def print_profil(self, ctx):
+        embed=discord.Embed(title=f"Profil de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos informations personnelles", color=0x1f6e9e)
+        embed.set_author(name="ESGI | !profil", icon_url="https://zupimages.net/up/21/49/us0q.png")
+        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_footer(text="Made by DAVE")
+        data = self.get_profil()
+        for key in data:
+            if key == 'mailing':
+                break
+            embed.add_field(name=f"{key}", value=f"{data[key]}", inline=True)
+        await ctx.send(embed=embed)
 
+    async def print_students(self,ctx, year="2021"):
+        liste_info_nul = ["profile_type", "uid", "links", "civility"] #Liste des informations qui ne seront pas affichées
+        dico_trad = { #Traduction des libellés
+                    "firstname": "Prénom", 
+                    "lastname": "Nom de famille",
+                    "email": "Adresse e-mail",
+                    }
+        data = self.get_students(year)
+        for classes in data:
+            embed=discord.Embed(title=f"Profil de {classes['firstname']} {classes['lastname']}", url="https://myges.fr/student/marks", description="Ici apparaissent les informations de vos camarades de classe", color=0x1f6e9e)
+            embed.set_author(name="ESGI | !ma_classe", icon_url="https://zupimages.net/up/21/49/9lc8.png")
+            embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+            embed.set_footer(text="Made by DAVE")
+            ctr = ''
+            for key in classes:
+                if f"{ctr}{key}" in liste_info_nul:
+                    pass
+                else:
+                    if f"{ctr}{key}" == "uid":
+                        inline = False
+                    else:
+                        inline = True
+                    embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes[key]}", inline=inline)
+            await ctx.send(embed=embed)
 #    def main():
 #        myges = MYGES("", "")
 #        print("""
