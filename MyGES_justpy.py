@@ -149,7 +149,7 @@ def main():
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     """)
-    myges.print_students("2021")
+    myges.print_info()
     #myges.print_info()
 if __name__ == '__main__':
     main()

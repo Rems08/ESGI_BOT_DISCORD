@@ -101,6 +101,7 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     embed.add_field(name="- !connexion", value="**!connexion** {user MyGES} {Password MyGES} connecte l'utilisateur à son compte MyGES", inline=True)
     embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
     embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
+    embed.add_field(name="- !ma_classe", value="Permet d'afficher les membres de votre classe avec leur adresse pour pouvoir les contacter en cas de besoin", inline=True)
     embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
     embed.set_footer(text="#Rems")
     try:
