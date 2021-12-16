@@ -158,13 +158,13 @@ class MYGES:
 
     async def print_agenda(self, ctx, start, end):
         data = self.get_agenda(start, end)
-        ###EMBED###
-        embed=discord.Embed(title=f"Prochains cours de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos prochains cours", color=0x1f6e9e)
-        embed.set_author(name="ESGI | !prochains_cours", icon_url="https://zupimages.net/up/21/50/9bk1.png")
-        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
-        embed.set_footer(text="Made by DAVE")
-        ###EMBED###
         for row in data:
+            ###EMBED###
+            embed=discord.Embed(title=f"Prochains cours de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos prochains cours", color=0x1f6e9e)
+            embed.set_author(name="ESGI | !prochains_cours", icon_url="https://zupimages.net/up/21/50/9bk1.png")
+            embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+            embed.set_footer(text="Made by DAVE")
+            ###EMBED###
             ctr = ''
             debut_du_cours = datetime.fromtimestamp(row["start_date"] / 1000)
             debut_du_cours = debut_du_cours.strftime("%HH%M")

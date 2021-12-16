@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup #Find Elements on website
 import welcome
 import embed
 from datetime import datetime
+import time
 
 intents = discord.Intents.default()
 intents.typing = True
@@ -147,7 +148,9 @@ async def ma_classe(ctx, user=None, password=None):
 async def prochains_cours(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de connaître les informations de ses prochains cours de la journée"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
-    await myges.print_agenda(ctx, 1633071600000, 1633107600000)
+    today = int(round(time.time() * 1000))
+    year = 31536000000
+    await myges.print_agenda(ctx, today, (today + 31536000000))
 
 @bot.command()
 async def mes_notes(ctx, user=None, password=None): 
