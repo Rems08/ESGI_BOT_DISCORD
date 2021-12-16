@@ -5,6 +5,7 @@ from urllib.parse import urlsplit, parse_qs
 import base64
 import time
 import json
+from datetime import datetime
 
 class MYGES:
     def __init__(self, discordid, username=None, password=None):
@@ -64,6 +65,8 @@ class MYGES:
     
     def get_info(self):
         return requests.get(f"{self.actionurl}/me/profile", headers=self.token).json()["result"]
+    def get_agenda(self, start, end):
+        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token).json()["result"]
     
     def get_absences(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()["result"]
@@ -91,8 +94,25 @@ class MYGES:
                 break
             print(f"{key} : {data[key]}")
 
-    def print_absences(self, year):
-        for row in self.get_absences(year):
+    def print_agenda(self, start, end):
+        data = self.get_agenda(start, end)
+        for row in data:
+            ctr = ''
+            debut_du_cours = datetime.fromtimestamp(row["start_date"] / 1000)
+            fin_du_cours = datetime.fromtimestamp(row["end_date"] / 1000)
+            prof = row["teacher"]
+            matiere = row["name"]
+            type_de_cours = row["modality"]
+            room_info = row['rooms']
+            for key in room_info:
+                room_number = key['name']
+                etage = key['floor']
+                campus = key['campus']
+            print(f"Le prochain cours aura lieu au campus {campus}, à l'étage {etage} salle numéro {room_number}")
+            print(f"Il commencera à {debut_du_cours} et finira à {fin_du_cours}, il sera dirigé par {prof} qui vous enseignera {matiere}")
+
+    def print_absences(self, start, end):
+        for row in self.get_absences(start, end):
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
             just = "Jusitifiée" if row["justified"] else "Non justifiée"
             print(f'{date}\t{just}\t{row["course_name"]}')
@@ -149,7 +169,7 @@ def main():
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     """)
-    myges.print_info()
+    myges.print_agenda("1633071600000", "1633107600000")
     #myges.print_info()
 if __name__ == '__main__':
     main()

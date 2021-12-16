@@ -6,6 +6,7 @@ import base64
 import json
 import time
 import discord
+from datetime import datetime
 
 class MYGES:
     def __init__(self, discordid, username=None, password=None):
@@ -78,6 +79,8 @@ class MYGES:
         return {"Authorization" : f"{tokenret['token_type']} {tokenret['access_token']}"}
     
 
+    def get_agenda(self, start, end):
+        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token).json()["result"]
 
     def get_profil(self):
         return requests.get(f"{self.actionurl}/me/profile", headers=self.token).json()["result"]
@@ -86,13 +89,15 @@ class MYGES:
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()
 
     def get_agenda(self, start, end):
-        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token)
+        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token).json()["result"]
         
     def get_grades(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/grades", headers=self.token).json()
 
     def get_students(self, year):
         return requests.get(requests.get(f"{self.actionurl}/me/{year}/classes", headers=self.token).json()["result"][0]["links"][1]["href"], headers=self.token).json()["result"]
+
+
 
     async def print_absences(self, ctx, year="2021"):
         """Permet d'afficher les absence de l'utilisateur"""
@@ -104,7 +109,6 @@ class MYGES:
         embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
         embed.set_footer(text="Made by DAVE")
         ###EMBED###
-
         print(ctx.author)
         for row in jsondata["result"]:
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
@@ -114,6 +118,9 @@ class MYGES:
             embed.add_field(name=f"{date}: {just}", value=f"{course_name}", inline=True)
         await ctx.send(embed=embed)
     
+
+
+
     async def print_grades(self, ctx, year="2021"):
         """Permet d'afficher les notes de l'utilisateur"""
 
@@ -135,6 +142,8 @@ class MYGES:
             print("____________________") 
         await ctx.send(embed=embed)
 
+
+
     async def print_profil(self, ctx):
         embed=discord.Embed(title=f"Profil de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos informations personnelles", color=0x1f6e9e)
         embed.set_author(name="ESGI | !profil", icon_url="https://zupimages.net/up/21/49/us0q.png")
@@ -146,6 +155,43 @@ class MYGES:
                 break
             embed.add_field(name=f"{key}", value=f"{data[key]}", inline=True)
         await ctx.send(embed=embed)
+
+    async def print_agenda(self, ctx, start, end):
+        data = self.get_agenda(start, end)
+        ###EMBED###
+        embed=discord.Embed(title=f"Prochains cours de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos prochains cours", color=0x1f6e9e)
+        embed.set_author(name="ESGI | !prochains_cours", icon_url="https://zupimages.net/up/21/50/9bk1.png")
+        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_footer(text="Made by DAVE")
+        ###EMBED###
+        for row in data:
+            ctr = ''
+            debut_du_cours = datetime.fromtimestamp(row["start_date"] / 1000)
+            debut_du_cours = debut_du_cours.strftime("%HH%M")
+            fin_du_cours = datetime.fromtimestamp(row["end_date"] / 1000)
+            fin_du_cours = fin_du_cours.strftime("%HH%M")
+            prof = row["teacher"]
+            matiere = row["name"]
+            type_de_cours = row["modality"]
+            room_info = row['rooms']
+            for key in room_info:
+                room_number = key['name']
+                etage = key['floor']
+                campus = key['campus']
+            if type_de_cours == "Présentiel":
+                embed.add_field(name=f"Catégorie de présence", value=f"**{type_de_cours}**", inline=True)
+                embed.add_field(name=f"Lieu", value=f"Au campus**{campus}**, au **{etage}**, salle numéro **{room_number}**", inline=True)
+                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}**", inline=True)
+                embed.add_field(name=f"Professeur.e", value=f"**{prof}**", inline=True)
+                embed.add_field(name=f"Cours", value=f"Cours de **{matiere}**", inline=True)
+ 
+            else:
+                embed.add_field(name=f"Catégorie de présence", value=f"**{type_de_cours}**", inline=True)
+                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}**", inline=True)
+                embed.add_field(name=f"Professeur.e", value=f"**{prof}**", inline=True)
+                embed.add_field(name=f"Cours", value=f"Cours de **{matiere}**", inline=True)
+            await ctx.send(embed=embed)
+
 
     async def print_students(self,ctx, eleve=False, year="2021"):
         liste_info_nul = ["profile_type", "uid", "links", "civility"] #Liste des informations qui ne seront pas affichées
