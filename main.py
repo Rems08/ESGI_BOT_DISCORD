@@ -98,12 +98,18 @@ async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cou
 async def help(ctx): #Affiche une liste structurées des différentes commandes
     '''Cette commande permet de tester le bot'''
     embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
+    embed.set_thumbnail(url="https://www.ican-design.fr/ecole-infographie/ESGI_logo_web_blanc.png")
     embed.set_author(name="ESGI | !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
-    embed.add_field(name="- !connexion", value="**!connexion** {user MyGES} {Password MyGES} connecte l'utilisateur à son compte MyGES", inline=True)
-    embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=True)
-    embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=True)
-    embed.add_field(name="- !ma_classe", value="Permet d'afficher les membres de votre classe avec leur adresse pour pouvoir les contacter en cas de besoin", inline=True)
-    embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=True)
+    embed.add_field(name="- !connexion", value="Utilisation: **!connexion** {user MyGES} {Password MyGES} connecte l'utilisateur à son compte MyGES", inline=True)
+    embed.add_field(name="- !deconnexion", value="Déconnecte l'utilisateur de son compte MyGES", inline=False)
+    embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=False)
+    embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=False)
+    embed.add_field(name="- !ma_classe", value="Permet d'afficher les membres de votre classe avec leur adresse pour pouvoir les contacter en cas de besoin", inline=False)
+    embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=False)
+    embed.add_field(name="- !prochains_cours", value="Permet d'afficher les différentes informations sur les prochains cours de l'utilisateur", inline=False)
+    embed.add_field(name="- !prof_infos", value="Permet d'afficher les différentes informations concernant les professeurs (matières enseignées, e-mail, présence etc...) **(API renvoie une erruer 500 internal server error)**", inline=True)
+    embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance **(EN DEV)**", inline=False)
+    embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école **(EN DEV)**", inline=False)
     embed.set_footer(text="#Rems")
     try:
         right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
@@ -134,13 +140,23 @@ async def deconnexion(ctx): # Commande de test pour vérifier que le bot est bie
 
 @bot.command()
 async def profil(ctx, user=None, password=None): 
-    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    """Fonction qui permet à un utilisateur de visualiser ses informations personnelles"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_profil(ctx)
 
 @bot.command()
+async def administration(ctx, user=None, password=None): 
+    """Fonction qui permet à un utilisateur de recuperer le carnet d'adresse de l'administration de son école"""
+    await ctx.send(file=discord.File(r'./documents/contacts_lille_safed.rar'))
+
+@bot.command()
+async def calendrier(ctx, user=None, password=None): #Pour le moment renvoie uniquement le calendrier des ESGI1
+    """Fonction qui permet à un utilisateur de recuperer le calendrier des cours"""
+    await ctx.send(file=discord.File(r'./documents/1ESGI_Calendrier 21.22.pdf'))
+
+@bot.command()
 async def ma_classe(ctx, user=None, password=None): 
-    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    """Fonction qui permet à un utilisateur de visualiser les membres de sa classe"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_students(ctx)
 
@@ -170,11 +186,13 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
-    elif isinstance(error,commands.CommandInvokeError):
-        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis réitérer la connexion")
+    #elif isinstance(error,commands.CommandInvokeError):
+        #await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis réitérer la connexion")
     elif isinstance(error,commands.PrivateMessageOnly):
-        await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
         await ctx.message.delete()
+        await ctx.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! J'ai supprimé votre message pour éviter qu'une personne mal intentionnée essaye de se connecter à votre compte.")
+        await ctx.send("https://tenor.com/view/just-be-careful-william-riker-star-trek-the-next-generation-take-care-gif-23507437")
+        await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
     else:
         raise error
 

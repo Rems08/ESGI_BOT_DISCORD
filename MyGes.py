@@ -7,7 +7,7 @@ import json
 import time
 import discord
 from datetime import datetime
-
+logo_thumbnail = "https://www.ican-design.fr/ecole-infographie/ESGI_logo_web_blanc.png"
 class MYGES:
     def __init__(self, discordid, username=None, password=None):
         self.actionurl = "https://api.kordis.fr"
@@ -106,7 +106,7 @@ class MYGES:
         ###EMBED###
         embed=discord.Embed(title=f"absence de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos absence", color=0x1f6e9e)
         embed.set_author(name="ESGI | !mes_absences", icon_url="https://zupimages.net/up/21/49/73pj.png")
-        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_thumbnail(url=logo_thumbnail)
         embed.set_footer(text="Made by DAVE")
         ###EMBED###
         print(ctx.author)
@@ -127,7 +127,7 @@ class MYGES:
         ###EMBED###
         embed=discord.Embed(title=f"Notes de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos notes", color=0x1f6e9e)
         embed.set_author(name="ESGI | !mes_notes", icon_url="https://zupimages.net/up/21/49/i5w7.png")
-        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_thumbnail(url=logo_thumbnail)
         embed.set_footer(text="Made by DAVE")
         ###EMBED###
 
@@ -147,7 +147,7 @@ class MYGES:
     async def print_profil(self, ctx):
         embed=discord.Embed(title=f"Profil de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos informations personnelles", color=0x1f6e9e)
         embed.set_author(name="ESGI | !profil", icon_url="https://zupimages.net/up/21/49/us0q.png")
-        embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+        embed.set_thumbnail(url=logo_thumbnail)
         embed.set_footer(text="Made by DAVE")
         data = self.get_profil()
         for key in data:
@@ -162,14 +162,16 @@ class MYGES:
             ###EMBED###
             embed=discord.Embed(title=f"Prochains cours de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos prochains cours", color=0x1f6e9e)
             embed.set_author(name="ESGI | !prochains_cours", icon_url="https://zupimages.net/up/21/50/9bk1.png")
-            embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+            embed.set_thumbnail(url=logo_thumbnail)
             embed.set_footer(text="Made by DAVE")
             ###EMBED###
             ctr = ''
             debut_du_cours = datetime.fromtimestamp(row["start_date"] / 1000)
+            date = debut_du_cours.strftime("%d/%m/%Y")
             debut_du_cours = debut_du_cours.strftime("%HH%M")
             fin_du_cours = datetime.fromtimestamp(row["end_date"] / 1000)
             fin_du_cours = fin_du_cours.strftime("%HH%M")
+            
             prof = row["teacher"]
             matiere = row["name"]
             type_de_cours = row["modality"]
@@ -181,13 +183,13 @@ class MYGES:
             if type_de_cours == "Présentiel":
                 embed.add_field(name=f"Catégorie de présence", value=f"**{type_de_cours}**", inline=True)
                 embed.add_field(name=f"Lieu", value=f"Au campus**{campus}**, au **{etage}**, salle numéro **{room_number}**", inline=True)
-                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}**", inline=True)
+                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}** le **{date}**", inline=True)
                 embed.add_field(name=f"Professeur.e", value=f"**{prof}**", inline=True)
                 embed.add_field(name=f"Cours", value=f"Cours de **{matiere}**", inline=True)
  
             else:
                 embed.add_field(name=f"Catégorie de présence", value=f"**{type_de_cours}**", inline=True)
-                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}**", inline=True)
+                embed.add_field(name=f"Horaire", value=f"Le cours débutera à **{debut_du_cours}** et finira à **{fin_du_cours}** le **{date}**", inline=True)
                 embed.add_field(name=f"Professeur.e", value=f"**{prof}**", inline=True)
                 embed.add_field(name=f"Cours", value=f"Cours de **{matiere}**", inline=True)
             await ctx.send(embed=embed)
@@ -204,7 +206,7 @@ class MYGES:
         for classes in data:
             embed=discord.Embed(title=f"Profil de {classes['firstname']} {classes['lastname']}", url="https://myges.fr/student/marks", description="Ici apparaissent les informations de vos camarades de classe", color=0x1f6e9e)
             embed.set_author(name="ESGI | !ma_classe", icon_url="https://zupimages.net/up/21/49/9lc8.png")
-            embed.set_thumbnail(url="https://www.sciences-u-lyon.fr/images/2020/03/myges.png")
+            embed.set_thumbnail(url=logo_thumbnail)
             embed.set_footer(text="Made by DAVE")
             ctr = ''
             if eleve == False:
