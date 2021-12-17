@@ -108,8 +108,8 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=False)
     embed.add_field(name="- !prochains_cours", value="Permet d'afficher les différentes informations sur les prochains cours de l'utilisateur", inline=False)
     embed.add_field(name="- !prof_infos", value="Permet d'afficher les différentes informations concernant les professeurs (matières enseignées, e-mail, présence etc...) **(API renvoie une erruer 500 internal server error)**", inline=True)
-    embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance **(EN DEV)**", inline=False)
-    embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école **(EN DEV)**", inline=False)
+    embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance **(EN DEV fonctionne)**", inline=False)
+    embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école **(EN DEV ne fonctionne pas)**", inline=False)
     embed.set_footer(text="#Rems")
     try:
         right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
