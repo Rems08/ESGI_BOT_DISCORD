@@ -97,6 +97,8 @@ class MYGES:
     def get_students(self, year):
         return requests.get(requests.get(f"{self.actionurl}/me/{year}/classes", headers=self.token).json()["result"][0]["links"][1]["href"], headers=self.token).json()["result"]
 
+    def get_news(self):
+        return requests.get(f"{self.actionurl}/me/news", headers=self.token).json()["result"]
 
 
     async def print_absences(self, ctx, year="2021"):
@@ -224,6 +226,34 @@ class MYGES:
                 embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes['lastname']}", inline=inline)
                 embed.add_field(name=f"{ctr}{dico_trad[key]}", value=f"{classes['email']}", inline=inline)
             await ctx.send(embed=embed)
+    async def print_news(self, ctx):
+        data = self.get_news()
+        for key in data:
+            news_info = data['content']
+        for info in data['content']:
+            for row in info:
+                title_news = info['title']
+                author_news = info['author']
+                date_news = datetime.fromtimestamp(info["date"] / 1000)
+                date_news = date_news.strftime("%d/%m/%Y")
+
+                for i in info['links']:
+                    if "https://www.myges.fr/#/actualites" in i['href']:
+                        link_news = i['href']
+                    #else:
+                        #link_news = "https://www.myges.fr/#/actualites"
+                ###EMBED###
+                embed=discord.Embed(title=title_news, url=link_news, description=f"Voici l'article concernant: {title_news}", color=0x1f6e9e)
+                embed.set_author(name="ESGI | !news", icon_url="https://zupimages.net/up/21/51/wv0u.png")
+                embed.set_thumbnail(url=logo_thumbnail)
+                embed.set_footer(text="Made by DAVE")
+                embed.add_field(name=f"Auteur", value=f"{author_news}", inline=True)
+                embed.add_field(name=f"Publié le", value=f"{date_news}", inline=True)
+                embed.add_field(name=f"Lien vers l'article", value=f"{link_news}", inline=True)
+                embed.add_field(name=f"Autres articles", value=f"https://www.myges.fr/#/actualites", inline=False)
+                ###EMBED###
+        await ctx.send(embed=embed)        
+        print(f"L'article a pour titre {title_news}, il a été écrit par {author_news} et a été publié le {date_news}. Lien de l'article ici:{link_news}")
 
 
 #    def main():

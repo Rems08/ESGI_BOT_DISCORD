@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from discord.permissions import permission_alias
 import requests
 from urllib.parse import urlsplit, parse_qs
 import base64
@@ -17,7 +18,7 @@ class MYGES:
             
         if self.is_registered():
             self.userobj = self.get_userbydiscordid()
-            self.token = self.get_token(self.userobj["BasicToken"])
+            self.token = self.get_token(self.userobj["BasicToken"]) #Permet de récupérer le bearer token
         
     def is_registered(self):
         users = open('users.json', 'r')
@@ -85,6 +86,9 @@ class MYGES:
 
     def get_students(self, year):
         return requests.get(requests.get(f"{self.actionurl}/me/{year}/classes", headers=self.token).json()["result"][0]["links"][1]["href"], headers=self.token).json()["result"]
+
+    def get_news(self):
+        return requests.get(f"{self.actionurl}/me/news", headers=self.token).json()["result"]
 
     # All method used for display api informations
     def print_info(self):
@@ -158,6 +162,22 @@ class MYGES:
                 ctr = '\t'
             print()
 
+    def print_news(self):
+        data = self.get_news()
+        for key in data:
+            news_info = data['content']
+        for info in data['content']:
+            for row in info:
+                title_news = info['title']
+                author_news = info['author']
+                date_news = datetime.fromtimestamp(info["date"] / 1000)
+                date_news = date_news.strftime("%d/%m/%Y")
+                for i in info['links']:
+                    if "https://www.myges.fr/#/actualites" in i['href']:
+                        link_news = i['href']
+        print(f"L'article a pour titre {title_news}, il a été écrit par {author_news} et a été publié le {date_news}. Lien de l'article ici:{link_news}")
+            
+
 def main():
     myges = MYGES("6666", "rmassiet", "x1oypZ9L$^9aj8XwFDslUF0zs" )
     print("""
@@ -169,7 +189,7 @@ def main():
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     """)
-    myges.print_agenda("1633071600000", "1633107600000")
+    myges.print_news()
     #myges.print_info()
 if __name__ == '__main__':
     main()

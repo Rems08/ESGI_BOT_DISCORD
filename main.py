@@ -5,14 +5,14 @@ from discord.ext import commands
 from discord.ext.commands.errors import NoEntryPointError
 from discord.utils import *
 from random import*
-# ajouter un composant de discord.py
+# ajoute plusieurs bibliothèques pour gérer tous les évènement programmés ainsi que la convertion timstramp + communication web
 import time, calendar, asyncio, datetime, discord, requests
 import MyGes #On importe le module time pour la commande sleep
 import heurePause
 import requests #Enable HTTP requests
 from requests import*
 from bs4 import BeautifulSoup #Find Elements on website
-import welcome
+import welcome #Permet de configurer le message d'arrivé des membres du serveur
 import embed
 from datetime import datetime
 import time
@@ -111,14 +111,14 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance **(EN DEV fonctionne)**", inline=False)
     embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école **(EN DEV ne fonctionne pas)**", inline=False)
     embed.set_footer(text="#Rems")
-    try:
-        right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎")
+    try: 
+        right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎") 
         if right_channel == ctx.channel:
             await ctx.send(embed=embed)
         else:
             await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
             await ctx.author.send("Vous écrivez dans le mauvais channel.")
-    except:
+    except: #Condition qui permet de gérer si l'utilisateur envoie le message en mp 
         await ctx.send(embed=embed)
 
 @bot.command()
@@ -165,7 +165,7 @@ async def prochains_cours(ctx, user=None, password=None):
     """Fonction qui permet à un utilisateur de connaître les informations de ses prochains cours de la journée"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     today = int(round(time.time() * 1000))
-    year = 31536000000
+    year = 31536000000 #Une année en miliseconde 
     await myges.print_agenda(ctx, today, (today + 31536000000))
 
 @bot.command()
@@ -179,6 +179,13 @@ async def mes_absences(ctx, user=None, password=None):
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_absences(ctx, "2021")
+
+@bot.command()
+async def news(ctx, user=None, password=None): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
+    await myges.print_news(ctx)
+
 ####COMMANDES MYGES#### 
 @bot.event
 async def on_command_error(ctx,error):
