@@ -6,7 +6,12 @@ Notre serveur discord: https://discord.gg/8ZkXxzm5s6
 - python3.9
 - discord
 - discord.py
+- bs4.py
+- requests.py
 
+## Mise en place du bot
+- Clonez le repertoire et placez y un fichier nommé users.json avec deux [] dans le fichier
+- lancez main.py avec python3
 ## Futures idées
 - Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spécial
 - Système de vote de délégué
