@@ -178,10 +178,16 @@ class MYGES:
             matiere = row["name"]
             type_de_cours = row["modality"]
             room_info = row['rooms']
-            for key in room_info:
-                room_number = key['name']
-                etage = key['floor']
-                campus = key['campus']
+            if room_info ==None:
+                room_number = "Informations indisponibles"
+                etage = "Informations indisponibles"
+                campus = "Informations indisponibles"
+                return False
+            else:
+                for key in room_info:
+                    room_number = key['name']
+                    etage = key['floor']
+                    campus = key['campus']
             if type_de_cours == "Présentiel":
                 embed.add_field(name=f"Catégorie de présence", value=f"**{type_de_cours}**", inline=True)
                 embed.add_field(name=f"Lieu", value=f"Au campus**{campus}**, au **{etage}**, salle numéro **{room_number}**", inline=True)

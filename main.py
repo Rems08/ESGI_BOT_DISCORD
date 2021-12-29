@@ -108,9 +108,10 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     embed.add_field(name="- !membres", value="Permet d'afficher le nombre de membre du serveur discord", inline=False)
     embed.add_field(name="- !prochains_cours", value="Permet d'afficher les différentes informations sur les prochains cours de l'utilisateur", inline=False)
     embed.add_field(name="- !prof_infos", value="Permet d'afficher les différentes informations concernant les professeurs (matières enseignées, e-mail, présence etc...) **(API renvoie une erruer 500 internal server error)**", inline=True)
-    embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance **(EN DEV fonctionne)**", inline=False)
-    embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école **(EN DEV ne fonctionne pas)**", inline=False)
+    embed.add_field(name="- !calendrier", value="Récupérer le pdf du calendrier des cours et du rythme de l'alternance", inline=False)
+    embed.add_field(name="- !administration", value="Récupérer les infos concernant les membres de l'administration de l'école", inline=False)
     embed.add_field(name="- !news", value="Renvoie les dernier articles publié par votre école", inline=False)
+    embed.add_field(name="- !profil", value="Accéder à toutes les informations qui sont enregistrées par l'école vous concernant", inline=False)
     embed.set_footer(text="#Rems")
     try: 
         right_channel = discord.utils.get(ctx.guild.channels, name="🔎cmd-bot🔎") 
@@ -148,12 +149,13 @@ async def profil(ctx, user=None, password=None):
 @bot.command()
 async def administration(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de recuperer le carnet d'adresse de l'administration de son école"""
-    await ctx.send(file=discord.File(r'./documents/contacts_lille_safed.rar'))
+    await ctx.send("Cliquez ici pour télécharger le PDF:➡️ https://ges-dl.kordis.fr/private/4f0ZOcMI8zVQSFOEsinYUFImaNg8I9oOCZSMwXEBz3M ⬅️")
 
 @bot.command()
 async def calendrier(ctx, user=None, password=None): #Pour le moment renvoie uniquement le calendrier des ESGI1
     """Fonction qui permet à un utilisateur de recuperer le calendrier des cours"""
-    await ctx.send(file=discord.File(r'./documents/1ESGI_Calendrier 21.22.pdf'))
+    await ctx.send("SI dessous le PDF concernant le rythme de l'école:")
+    await ctx.send(file=discord.File(r'./documents/1ESGI_Calendrier21.22.pdf'))
 
 @bot.command()
 async def ma_classe(ctx, user=None, password=None): 
@@ -195,7 +197,7 @@ async def on_command_error(ctx,error):
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
     elif isinstance(error,commands.CommandInvokeError):
-        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis réitérer la connexion")
+        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.message.delete()
         await ctx.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! J'ai supprimé votre message pour éviter qu'une personne mal intentionnée essaye de se connecter à votre compte.")
