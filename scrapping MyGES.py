@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup #Find Elements on website
 import mechanize #Permet de remplir les formulaires automatiquement
 def afficher_notes():
     #Partie connexion
-    url = "https://myges.fr/student/marks;JSESSIONID=2F17CB8504EC86A839C644842DFE57A5" #URL du site à parcourir
+    url = "https://myges.fr/student/student-teacher-directory;jsessionid=F02C85E333FEC9828E3291323220168C" #URL du site à parcourir
     user = ""
     mdp = ""
     page = requests.get(url, auth=('user', 'mdp'))
@@ -44,7 +44,33 @@ def afficher_notes():
 
 def mist(): #Affiche les ABSENCES ET les RETARDS
     print("test")
-afficher_notes()
+
+def infos_profs():
+    #Partie connexion
+    url = "https://myges.fr/student/student-teacher-directory;jsessionid=F02C85E333FEC9828E3291323220168C" #URL du site à parcourir
+    user = ""
+    mdp = ""
+    page = requests.get(url, auth=('user', 'mdp'))
+    code_connexion = str(page.status_code)
+    if code_connexion == "200":
+        print("Connexion success")
+        print("Status code: ", page.status_code)
+    else:
+        print("Connexion failed")
+        print(f"ERROR: {code_connexion}")
+        exit()
+
+
+    #Partie scrapping
+    soup = BeautifulSoup(page.content, 'html.parser')
+    print(soup.title) #Permet d'afficher toute la page
+    print("Récupération du nom de vos profs en cours...")
+    matrice_notes = []
+    #Récupération des titres
+    liste_profs = soup.find_all("div", class_="ui-outputpanel ui-widget")
+    for i in liste_profs:
+        print(i.string)
+infos_profs()
 
 #Notes <tr data-ri="0" class="ui-widget-content ui-datatable-even odd-row" role="row">
 #Abscences s<tr data-ri="1" class="ui-widget-content ui-datatable-odd even-row" role="row">

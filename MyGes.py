@@ -145,6 +145,25 @@ class MYGES:
         await ctx.send(embed=embed)
 
 
+    async def print_moyenne(self, ctx, year="2021"):
+        """Permet d'afficher la moyenne de l'utilisateur"""
+        jsondata = self.get_grades(year)
+        print(ctx.author)
+        somme_notes = 0
+        nombre_de_notes = 0
+        for row in jsondata["result"]: #Parcours le fichier JSON
+            moyenne_matiere = 0
+            if row['grades']:
+                for i in row['grades']:
+                    moyenne_matiere += i
+                moyenne_matiere = moyenne_matiere / len(row['grades'])
+                try:
+                    somme_notes += moyenne_matiere * int(float(row['coef']))
+                    nombre_de_notes += int(float(row['coef']))
+                except:
+                    continue
+        moyenne = somme_notes / nombre_de_notes
+        await ctx.send(f"Vous avez {moyenne}/20 de moyenne générale.")
 
     async def print_profil(self, ctx):
         embed=discord.Embed(title=f"Profil de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos informations personnelles", color=0x1f6e9e)

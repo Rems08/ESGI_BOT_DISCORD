@@ -63,7 +63,7 @@ async def on_member_join(member):
     | $$/   \  $$| $$$$$$$$| $$$$$$$$|  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$$$$$$$       /$$$$$$| $$ \  $$      | $$ \/  | $$|  $$$$$$$|  $$$$$$/| $$$$$$$$|  $$$$$$/
     |__/     \__/|________/|________/ \______/  \______/ |__/     |__/|________/      |______/|__/  \__/      |__/     |__/ \____  $$ \______/ |________/ \______/ 
                                                                                                                             /$$  | $$                              
-                                                                                                                        |  $$$$$$/                              
+                                                                                                                           |  $$$$$$/                              
                                                                                                                             \______/                                         
     ```
     ''')
@@ -178,6 +178,12 @@ async def mes_notes(ctx, user=None, password=None):
     await myges.print_grades(ctx, "2021")
 
 @bot.command()
+async def ma_moyenne(ctx, user=None, password=None): 
+    """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
+    myges = MyGes.MYGES(ctx.author.id ,user, password)
+    await myges.print_moyenne(ctx, "2021")
+
+@bot.command()
 async def mes_absences(ctx, user=None, password=None): 
     """Fonction qui permet à un utilisateur de visualiser ses notes à l'aide d'un identifiant et d'un mdp"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
@@ -196,8 +202,8 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
-    elif isinstance(error,commands.CommandInvokeError):
-        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
+    #elif isinstance(error,commands.CommandInvokeError):
+        #await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.message.delete()
         await ctx.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! J'ai supprimé votre message pour éviter qu'une personne mal intentionnée essaye de se connecter à votre compte.")
