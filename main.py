@@ -202,8 +202,8 @@ async def on_command_error(ctx,error):
         await ctx.send("**Erreur:** Un argument est manquant. !help pour plus d'information sur les commandes.")
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
-    #elif isinstance(error,commands.CommandInvokeError):
-        #await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
+    elif isinstance(error,commands.CommandInvokeError):
+        await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.message.delete()
         await ctx.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! J'ai supprimé votre message pour éviter qu'une personne mal intentionnée essaye de se connecter à votre compte.")
