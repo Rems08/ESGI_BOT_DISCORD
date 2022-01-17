@@ -163,7 +163,7 @@ class MYGES:
                 except:
                     continue
         moyenne = somme_notes / nombre_de_notes
-        await ctx.send(f"Vous avez {moyenne}/20 de moyenne générale.")
+        await ctx.send(f"Vous avez {round(moyenne, 2)}/20 de moyenne générale.")
 
     async def print_profil(self, ctx):
         embed=discord.Embed(title=f"Profil de {ctx.author}", url="https://myges.fr/student/marks", description="Ici apparaissent vos informations personnelles", color=0x1f6e9e)
