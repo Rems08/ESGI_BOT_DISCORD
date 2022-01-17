@@ -180,7 +180,7 @@ class MYGES:
             
 
 def main():
-    myges = MYGES("6666", "rmassiet", "x1oypZ9L$^9aj8XwFDslUF0zs" )
+    myges = MYGES("6666", "", "" )
     print("""
     88888888b .d88888b   .88888.  dP     888888ba   .88888.  d888888P 
     88        88.    "' d8'   `88 88     88    `8b d8'   `8b    88    
