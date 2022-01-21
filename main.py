@@ -168,8 +168,9 @@ async def prochains_cours(ctx, user=None, password=None):
     """Fonction qui permet à un utilisateur de connaître les informations de ses prochains cours de la journée"""
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     today = int(round(time.time() * 1000))
-    year = 31536000000 #Une année en miliseconde 
-    await myges.print_agenda(ctx, today, (today + 31536000000))
+    year = 31536000000 #Une année en miliseconde
+    week = 518400000
+    await myges.print_agenda(ctx, today, (today + week))
 
 @bot.command()
 async def mes_notes(ctx, user=None, password=None): 

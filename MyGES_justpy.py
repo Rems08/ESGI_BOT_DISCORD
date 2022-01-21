@@ -109,10 +109,15 @@ class MYGES:
             matiere = row["name"]
             type_de_cours = row["modality"]
             room_info = row['rooms']
-            for key in room_info:
-                room_number = key['name']
-                etage = key['floor']
-                campus = key['campus']
+            if room_info == None:
+                room_number = None
+                etage = None
+                campus = None
+            else:
+                for key in room_info:
+                    room_number = key['name']
+                    etage = key['floor']
+                    campus = key['campus']
             print(f"Le prochain cours aura lieu au campus {campus}, à l'étage {etage} salle numéro {room_number}")
             print(f"Il commencera à {debut_du_cours} et finira à {fin_du_cours}, il sera dirigé par {prof} qui vous enseignera {matiere}")
 

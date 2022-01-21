@@ -197,11 +197,10 @@ class MYGES:
             matiere = row["name"]
             type_de_cours = row["modality"]
             room_info = row['rooms']
-            if room_info ==None:
-                room_number = "Informations indisponibles"
-                etage = "Informations indisponibles"
-                campus = "Informations indisponibles"
-                return False
+            if room_info == None:
+                room_number = None
+                etage = None
+                campus = None
             else:
                 for key in room_info:
                     room_number = key['name']
