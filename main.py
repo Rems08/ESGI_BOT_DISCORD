@@ -51,22 +51,7 @@ print("Lancement de ESGI...")
 #Action quand un user arrive dans le serveur
 @bot.event
 async def on_member_join(member):
-    print(member)
-    await member.send('''
-    ```yaml
-    /$$      /$$ /$$$$$$$$ /$$        /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$       /$$$$$$ /$$   /$$       /$$      /$$            /$$$$$$  /$$$$$$$$  /$$$$$$ 
-    | $$  /$ | $$| $$_____/| $$       /$$__  $$ /$$__  $$| $$$    /$$$| $$_____/      |_  $$_/| $$$ | $$      | $$$    /$$$           /$$__  $$| $$_____/ /$$__  $$
-    | $$ /$$$| $$| $$      | $$      | $$  \__/| $$  \ $$| $$$$  /$$$$| $$              | $$  | $$$$| $$      | $$$$  /$$$$ /$$   /$$| $$  \__/| $$      | $$  \__/
-    | $$/$$ $$ $$| $$$$$   | $$      | $$      | $$  | $$| $$ $$/$$ $$| $$$$$           | $$  | $$ $$ $$      | $$ $$/$$ $$| $$  | $$| $$ /$$$$| $$$$$   |  $$$$$$ 
-    | $$$$_  $$$$| $$__/   | $$      | $$      | $$  | $$| $$  $$$| $$| $$__/           | $$  | $$  $$$$      | $$  $$$| $$| $$  | $$| $$|_  $$| $$__/    \____  $$
-    | $$$/ \  $$$| $$      | $$      | $$    $$| $$  | $$| $$\  $ | $$| $$              | $$  | $$\  $$$      | $$\  $ | $$| $$  | $$| $$  \ $$| $$       /$$  \ $$
-    | $$/   \  $$| $$$$$$$$| $$$$$$$$|  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$$$$$$$       /$$$$$$| $$ \  $$      | $$ \/  | $$|  $$$$$$$|  $$$$$$/| $$$$$$$$|  $$$$$$/
-    |__/     \__/|________/|________/ \______/  \______/ |__/     |__/|________/      |______/|__/  \__/      |__/     |__/ \____  $$ \______/ |________/ \______/ 
-                                                                                                                            /$$  | $$                              
-                                                                                                                           |  $$$$$$/                              
-                                                                                                                            \______/                                         
-    ```
-    ''')
+    print(member, "Has join the server")
     await member.send(welcome.welcome()) #Envoie un message de bienvenue aux utilisateurs rejoignant le serveur
 
 
@@ -87,12 +72,6 @@ async def test(ctx): # Commande de test pour vérifier que le bot est bien en Et
     embed_test.add_field("Test1", "Value1")
     embed_test.add_field("Test2", "Value2")
     await ctx.send(embed=embed_test)
-
-@bot.command()
-async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cours"
-    '''Envoie Commande qui envoie la photo de mathis qui dit "Nul ce cours"'''
-    await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
-    await ctx.send("https://cdn.discordapp.com/attachments/889481646221430794/903662315340173352/unknown.png")
 
 @bot.command()
 async def help(ctx): #Affiche une liste structurées des différentes commandes
@@ -196,7 +175,16 @@ async def news(ctx, user=None, password=None):
     myges = MyGes.MYGES(ctx.author.id ,user, password)
     await myges.print_news(ctx)
 
-####COMMANDES MYGES#### 
+####COMMANDES MYGES FIN#### 
+
+
+####COMMANDES ESGI####
+@bot.command()
+async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cours"
+    '''Envoie Commande qui envoie la photo de mathis qui dit "Nul ce cours"'''
+    await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
+    await ctx.send("https://cdn.discordapp.com/attachments/889481646221430794/903662315340173352/unknown.png")
+####COMMANDES ESGI FIN#### 
 @bot.event
 async def on_command_error(ctx,error):
     if isinstance(error,commands.MissingRequiredArgument):
