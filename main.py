@@ -79,7 +79,7 @@ async def help(ctx): #Affiche une liste structurées des différentes commandes
     embed=discord.Embed(title="Liste des commandes", description="**Voici la liste des commandes du bot ESGI:**", color=0x9e0cbb)
     embed.set_thumbnail(url="https://www.ican-design.fr/ecole-infographie/ESGI_logo_web_blanc.png")
     embed.set_author(name="ESGI | !help", icon_url="https://www.supersoluce.com/sites/default/files/styles/picto_soluce/interrogation.png")
-    embed.add_field(name="- !connexion", value="Utilisation: **!connexion** {user MyGES} {Password MyGES} connecte l'utilisateur à son compte MyGES", inline=True)
+    embed.add_field(name="- !connexion", value="Utilisation: **!connexion** nomUtilisateur motDePasse connecte l'utilisateur à son compte MyGES **LA COMMANDE DOIT ÊTRE ENVOYEE EN PRIVEE AU BOT**", inline=True)
     embed.add_field(name="- !deconnexion", value="Déconnecte l'utilisateur de son compte MyGES", inline=False)
     embed.add_field(name="- !mes_notes", value="Permet d'afficher les notes de l'utilisateur", inline=False)
     embed.add_field(name="- !mes_absences", value="Permet d'afficher les absences de l'utilisateur", inline=False)
@@ -192,11 +192,12 @@ async def on_command_error(ctx,error):
     elif isinstance(error,commands.CommandNotFound):
         await ctx.send("**Erreur:** Il semblerait que votre commande soit mauvaise, !help pour la liste des commandes.")
     elif isinstance(error,commands.CommandInvokeError):
+        print("this is error")
+        print(error)
         await ctx.send("**Erreur:** Il semblerait que je n'arrive pas à me connecter à votre compte. Entrez la commande !deconnexion puis **réitérer la connexion**")
     elif isinstance(error,commands.PrivateMessageOnly):
         await ctx.message.delete()
         await ctx.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! J'ai supprimé votre message pour éviter qu'une personne mal intentionnée essaye de se connecter à votre compte.")
-        await ctx.send("https://tenor.com/view/just-be-careful-william-riker-star-trek-the-next-generation-take-care-gif-23507437")
         await ctx.author.send("⚠️ATTENTION⚠️ n'envoyez jamais votre mot de passe en publique ! Pour vous connectez envoyez le moi en message privé (ici).")
     else:
         raise error
