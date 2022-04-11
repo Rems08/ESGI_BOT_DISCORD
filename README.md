@@ -16,6 +16,9 @@ Notre serveur discord: https://discord.gg/8ZkXxzm5s6
 - Introduire un systeme de classe qui construit à partir d'un modèle un chanel et un rôle spécial
 - Système de vote de délégué
 
+## Problèmes rencontrés
+- Dans certains cas l'api blacklist l'utilisateur et il est impossible de faire des requêtes à moins de modifier le mot de passe de ce dernier
+- Webscrapping compliqué dû au passage vers le portail kordis
 ## Créateurs
 [Rémy MASSIET](https://github.com/Rems08) & [Elias EELKIHEL](https://github.com/xl00t)
 

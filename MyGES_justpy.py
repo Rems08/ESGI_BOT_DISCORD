@@ -98,7 +98,24 @@ class MYGES:
             if key == 'mailing':
                 break
             print(f"{key} : {data[key]}")
-
+    def print_moyenne(self, year="2021"):
+        """Permet d'afficher la moyenne de l'utilisateur"""
+        jsondata = self.get_grades(year)
+        somme_notes = 0
+        nombre_de_notes = 0
+        for row in jsondata["result"]: #Parcours le fichier JSON
+            moyenne_matiere = 0
+            if row['grades']:
+                for i in row['grades']:
+                    moyenne_matiere += i
+                moyenne_matiere = moyenne_matiere / len(row['grades'])
+                try:
+                    somme_notes += moyenne_matiere * int(float(row['coef']))
+                    nombre_de_notes += int(float(row['coef']))
+                except:
+                    continue
+        moyenne = somme_notes / nombre_de_notes
+        print(f"Vous avez {round(moyenne, 2)}/20 de moyenne générale.")
     def print_agenda(self, start, end):
         data = self.get_agenda(start, end)
         for row in data:
@@ -185,7 +202,7 @@ class MYGES:
             
 
 def main():
-    myges = MYGES("6666", "", "" )
+    myges = MYGES("6666", "rmassiet", "L7j4w4c7sRBEa@qGOY^2St" )
     print("""
     88888888b .d88888b   .88888.  dP     888888ba   .88888.  d888888P 
     88        88.    "' d8'   `88 88     88    `8b d8'   `8b    88    
@@ -197,7 +214,7 @@ def main():
     """)
     today = int(round(time.time() * 1000))
     year = 31536000000
-    myges.print_agenda(today, today + year)
+    myges.print_moyenne()
     #myges.print_info()
 if __name__ == '__main__':
     main()
