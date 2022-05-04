@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+from discord.permissions import permission_alias
 import requests
 from urllib.parse import urlsplit, parse_qs
 import base64
 import time
 import json
+from datetime import datetime
 
 class MYGES:
     def __init__(self, discordid, username=None, password=None):
@@ -16,7 +18,7 @@ class MYGES:
             
         if self.is_registered():
             self.userobj = self.get_userbydiscordid()
-            self.token = self.get_token(self.userobj["BasicToken"])
+            self.token = self.get_token(self.userobj["BasicToken"]) #Permet de récupérer le bearer token
         
     def is_registered(self):
         users = open('users.json', 'r')
@@ -63,7 +65,10 @@ class MYGES:
         return {"Authorization" : f"{tokenret['token_type']} {tokenret['access_token']}"}
     
     def get_info(self):
+        print(self.token)
         return requests.get(f"{self.actionurl}/me/profile", headers=self.token).json()["result"]
+    def get_agenda(self, start, end):
+        return requests.get(f"{self.actionurl}/me/agenda?start={start}&end={end}", headers=self.token).json()["result"]
     
     def get_absences(self, year):
         return requests.get(f"{self.actionurl}/me/{year}/absences", headers=self.token).json()["result"]
@@ -83,6 +88,9 @@ class MYGES:
     def get_students(self, year):
         return requests.get(requests.get(f"{self.actionurl}/me/{year}/classes", headers=self.token).json()["result"][0]["links"][1]["href"], headers=self.token).json()["result"]
 
+    def get_news(self):
+        return requests.get(f"{self.actionurl}/me/news", headers=self.token).json()["result"]
+
     # All method used for display api informations
     def print_info(self):
         data = self.get_info()
@@ -90,9 +98,48 @@ class MYGES:
             if key == 'mailing':
                 break
             print(f"{key} : {data[key]}")
+    def print_moyenne(self, year="2021"):
+        """Permet d'afficher la moyenne de l'utilisateur"""
+        jsondata = self.get_grades(year)
+        somme_notes = 0
+        nombre_de_notes = 0
+        for row in jsondata["result"]: #Parcours le fichier JSON
+            moyenne_matiere = 0
+            if row['grades']:
+                for i in row['grades']:
+                    moyenne_matiere += i
+                moyenne_matiere = moyenne_matiere / len(row['grades'])
+                try:
+                    somme_notes += moyenne_matiere * int(float(row['coef']))
+                    nombre_de_notes += int(float(row['coef']))
+                except:
+                    continue
+        moyenne = somme_notes / nombre_de_notes
+        print(f"Vous avez {round(moyenne, 2)}/20 de moyenne générale.")
+    def print_agenda(self, start, end):
+        data = self.get_agenda(start, end)
+        for row in data:
+            ctr = ''
+            debut_du_cours = datetime.fromtimestamp(row["start_date"] / 1000)
+            fin_du_cours = datetime.fromtimestamp(row["end_date"] / 1000)
+            prof = row["teacher"]
+            matiere = row["name"]
+            type_de_cours = row["modality"]
+            room_info = row['rooms']
+            if room_info == None:
+                room_number = None
+                etage = None
+                campus = None
+            else:
+                for key in room_info:
+                    room_number = key['name']
+                    etage = key['floor']
+                    campus = key['campus']
+            print(f"Le prochain cours aura lieu au campus {campus}, à l'étage {etage} salle numéro {room_number}")
+            print(f"Il commencera à {debut_du_cours} et finira à {fin_du_cours}, il sera dirigé par {prof} qui vous enseignera {matiere}")
 
-    def print_absences(self, year):
-        for row in self.get_absences(year):
+    def print_absences(self, start, end):
+        for row in self.get_absences(start, end):
             date = time.strftime('%d-%m-%Y %H:%M', time.localtime(int(str(row['date'])[:-3])))
             just = "Jusitifiée" if row["justified"] else "Non justifiée"
             print(f'{date}\t{just}\t{row["course_name"]}')
@@ -138,6 +185,22 @@ class MYGES:
                 ctr = '\t'
             print()
 
+    def print_news(self):
+        data = self.get_news()
+        for key in data:
+            news_info = data['content']
+        for info in data['content']:
+            for row in info:
+                title_news = info['title']
+                author_news = info['author']
+                date_news = datetime.fromtimestamp(info["date"] / 1000)
+                date_news = date_news.strftime("%d/%m/%Y")
+                for i in info['links']:
+                    if "https://www.myges.fr/#/actualites" in i['href']:
+                        link_news = i['href']
+        print(f"L'article a pour titre {title_news}, il a été écrit par {author_news} et a été publié le {date_news}. Lien de l'article ici:{link_news}")
+            
+
 def main():
     myges = MYGES("6666", "", "" )
     print("""
@@ -149,7 +212,9 @@ def main():
     88888888P  Y88888P   `88888'  dP     88888888P  `8888P'     dP    
     ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
     """)
-    myges.print_students("2021")
+    today = int(round(time.time() * 1000))
+    year = 31536000000
+    myges.print_moyenne()
     #myges.print_info()
 if __name__ == '__main__':
     main()

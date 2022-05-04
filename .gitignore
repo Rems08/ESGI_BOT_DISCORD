@@ -1,1 +1,3 @@
 *.json
+*.pyc
+MyGES_justpy.py

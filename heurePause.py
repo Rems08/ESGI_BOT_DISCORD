@@ -7,7 +7,6 @@ from discord.ext import commands
 import time, calendar, asyncio, datetime, discord, requests #On importe le module time pour la commande sleep
 bot = commands.Bot(command_prefix='!') #Permettra au bot de savoir quand est-ce qu'on lui parle grâce au str de command_prefix
 async def pause():
-    print("Ce programme est fait pour combler les lacunes de la PTN d'ESGI de merde qui ne sait pas faire son taff")
     channel = bot.get_channel(903609266072600629) #defini le channel Général du discord
     async def wait_until(dt):
         # sleep until the specified datetime
