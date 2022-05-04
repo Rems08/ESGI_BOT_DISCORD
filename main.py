@@ -12,7 +12,6 @@ import heurePause
 import requests #Enable HTTP requests
 from requests import*
 from bs4 import BeautifulSoup #Find Elements on website
-import welcome #Permet de configurer le message d'arrivé des membres du serveur
 import embed
 from datetime import datetime
 import time
@@ -205,6 +204,6 @@ async def on_command_error(ctx,error):
         raise error
 
 #Partie lancement du bot
-token = open("../token.txt", "r").read() #Renseignez le chemin du token ici
+token = open("token.txt", "r").read() #Renseignez le chemin du token ici
 # connecter au serveur
 bot.run(token) #Mettre "Token pour lancer le bot"
