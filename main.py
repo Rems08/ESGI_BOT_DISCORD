@@ -51,7 +51,7 @@ print("Lancement de ESGI...")
 @bot.event
 async def on_member_join(member):
     print(member, "Has join the server")
-    await member.send(welcome.welcome()) #Envoie un message de bienvenue aux utilisateurs rejoignant le serveur
+    await member.send("Hey bienvenue sur le serveur ^^ N'hésites pas à m'envoyer !help pour savoir comment je fonctionne :)") #Envoie un message de bienvenue aux utilisateurs rejoignant le serveur
 
 
 @bot.command()
