@@ -185,6 +185,12 @@ async def nul(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cou
     '''Envoie Commande qui envoie la photo de mathis qui dit "Nul ce cours"'''
     await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
     await ctx.send("https://cdn.discordapp.com/attachments/889481646221430794/903662315340173352/unknown.png")
+
+@bot.command()
+async def bagarre(ctx): # Commande qui envoie la photo de mathis qui dit "Nul ce cours"
+    '''Envoie Commande qui envoie la photo de mathis qui dit "Nul ce cours"'''
+    await ctx.message.delete() #Supprime le message de la personne ayant rentré la commande
+    await ctx.send("https://cdn.discordapp.com/attachments/908037516945403974/978225115118567424/IMG_1620.png")
 ####COMMANDES ESGI FIN#### 
 @bot.event
 async def on_command_error(ctx,error):

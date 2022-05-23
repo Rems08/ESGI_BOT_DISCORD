@@ -1,6 +1,3 @@
-echo "[]" > users.json
-sudo apt install python3-pip
-pip install discord.py
-pip install requests
-pip install bs4
+pip install -r requirements.txt
+echo [] > users.json
 python3 main.py
