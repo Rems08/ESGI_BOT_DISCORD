@@ -53,6 +53,17 @@ async def on_member_join(member):
     print(member, "Has join the server")
     await member.send("Hey bienvenue sur le serveur ^^ N'hésites pas à m'envoyer !help pour savoir comment je fonctionne :)") #Envoie un message de bienvenue aux utilisateurs rejoignant le serveur
 
+#Actions lorsque qu'il détecte un message
+@bot.event
+async def on_message(ctx):
+    find_quoi = ctx.content.split()
+    for i in find_quoi:
+        if "quoi" in i:
+            await ctx.reply(i.replace("quoi", "feur"), mention_author=False)
+            break
+        if "Quoi" in i:
+            await ctx.reply(i.replace("Quoi", "Feur"), mention_author=False)
+            break
 
 @bot.command()
 async def membres(ctx): 
